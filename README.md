@@ -59,15 +59,14 @@ Key design decisions:
 
 ## What I'd build next
 
-- **Ambassador-facing view** — a lightweight portal where students can log their own activations, post to The Wall, and see their progress through the tiers
-- **Opal for Schools Dashboard integration** — so schools can see their own report card and upcoming activations without needing to contact Opal directly
-- **Real data integration** — connect to Opal's existing school dashboard so engagement scores pull from actual usage data rather than manually tracked metrics
-- **Activation templates library** — a bank of proven activation formats ambassadors can browse and adapt, reducing the blank page problem when planning their first event
+- **Ambassador-facing view** — a lightweight portal where students can log their own activations, post to The Wall, and see their progress through the tiers.
+- **Opal for Schools Dashboard integration** — connect to Opal's existing school dashboard so engagement scores are pulling from actual usage data, and so schools can see their own report card and upcoming activations without needing to contact Opal directly. 
+
 
 ---
 
 ## Notes
 
-All data is seeded and fake. localStorage persistence means anything added via the Launch a School wizard survives a page refresh. Hit "Reset to demo data" (bottom left) to restore the original seed data at any time.
+All data is seeded and fake. localStorage persistence means anything added via the Launch a School wizard survives a page refresh. Hit "Reset to demo data" (bottom left) to restore the original seed data at any time. Biggest challenge was telling myself when to stop adding new features, and trying to visualise the flow between all the pages! 
 
-Built in approximately 4 hours. Prioritised working features and genuine role-relevance over production-level architecture.
+Built in approximately 4 hours. Prioritised working features and role-relevance over production-level architecture.
