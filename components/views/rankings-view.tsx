@@ -237,7 +237,7 @@ export function RankingsView() {
                 </div>
                 
                 <p className="text-[#E5E5E5] leading-relaxed mb-6">
-                  Rankings are built around momentum, not just status. Your score is made up of five things: your current tier (the foundation — a Leader starts higher than a Prospect), activations you&apos;ve completed (doing things matters more than titles), your activity streak (consistency counts), how recently we&apos;ve been in contact (a health check), and a small bonus for Uncut Gems — students who wouldn&apos;t normally show up in a ranking like this but whose buy-in creates real culture change. If you go quiet, your score decays slowly — not a cliff edge, just a nudge to re-engage.
+                  Rankings are built around momentum, not just status. Your score is made up of five things: your current tier (the foundation — a Leader starts higher than a Prospect), activations you&apos;ve completed (doing things matters more than titles), your activity streak (consistency counts), how recently we&apos;ve been in contact (a health check), and a small bonus for Uncut Gems — students who wouldn&apos;t normally show up in a ranking like this but whose buy-in creates real culture change. If you go quiet, your score decays slowly, and Opal Advocacy Manager gets a nudge to re-engage with you personally.
                 </p>
                 
                 <div className="space-y-3">

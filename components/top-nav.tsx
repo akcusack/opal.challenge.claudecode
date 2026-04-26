@@ -25,7 +25,11 @@ export function TopNav() {
           <h1 className="text-xl font-bold tracking-tight text-white">
             <span className="text-[#7C3AED]">Opal</span> Ambassador OS
           </h1>
-          
+
+          <span className="hidden xl:block text-xs font-light tracking-wide text-[#78716C]">
+            Powering the focus revolution 📵
+          </span>
+
           <nav className="flex items-center gap-1">
             {tabs.map((tab) => (
               <button

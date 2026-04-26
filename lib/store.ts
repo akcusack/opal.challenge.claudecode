@@ -1,6 +1,7 @@
 'use client'
 
 import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 import { ambassadors as initialAmbassadors, schools as initialSchools, calendarEvents as initialEvents, type Ambassador, type School, type Tier, type CalendarEvent, type EventType } from './data'
 
 interface AppState {
@@ -19,11 +20,15 @@ interface AppState {
   moveToNextTier: (ambassadorId: string) => void
   updateAmbassadorNotes: (ambassadorId: string, notes: string) => void
   addCalendarEvent: (event: Omit<CalendarEvent, 'id'>) => void
+  launchSchool: (school: Omit<School, 'id'>, newAmbassadors: Omit<Ambassador, 'id'>[]) => void
+  resetToSeedData: () => void
 }
 
 const tierOrder: Tier[] = ['Prospect', 'Onboarded', 'Active', 'Leader', 'Young Founders Network']
 
-export const useAppStore = create<AppState>((set) => ({
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
   ambassadors: initialAmbassadors,
   schools: initialSchools,
   calendarEvents: initialEvents,
@@ -69,4 +74,30 @@ export const useAppStore = create<AppState>((set) => ({
       { ...event, id: `evt-${Date.now()}` }
     ]
   })),
-}))
+
+  launchSchool: (schoolData, newAmbassadors) => set((state) => ({
+    schools: [
+      ...state.schools,
+      { ...schoolData, id: `school-${Date.now()}` }
+    ],
+    ambassadors: [
+      ...state.ambassadors,
+      ...newAmbassadors.map((a, i) => ({ ...a, id: `amb-${Date.now()}-${i}` }))
+    ]
+  })),
+
+  resetToSeedData: () => set({
+    ambassadors: initialAmbassadors,
+    schools: initialSchools,
+  }),
+    }),
+    {
+      name: 'opal-ambassador-data',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        ambassadors: state.ambassadors,
+        schools: state.schools,
+      }),
+    }
+  )
+)

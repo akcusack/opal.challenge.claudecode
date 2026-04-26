@@ -34,6 +34,16 @@ export interface School {
   engagementPercentage: number
   lastActivityDate: string
   isDecline: boolean
+  isTrial?: boolean
+  trialGoals?: {
+    activations: number
+    ambassadors: number
+    engagementScore: number
+    customGoal?: string
+  }
+  coordinatorName?: string
+  coordinatorEmail?: string
+  trialStartDate?: string
 }
 
 // Generate email from name and school
@@ -50,7 +60,7 @@ export const ambassadors: Ambassador[] = [
   { id: '1', name: 'Maya Chen', school: 'Highbury Academy', tier: 'Young Founders Network', engagementScore: 98, isUncutGem: false, lastContactDate: '2026-04-24', daysInCurrentTier: 45, notes: 'Co-founded wellness club. Exceptional leader.', email: 'maya.chen@highburyacademy.school', activationsCompleted: 5, streakWeeks: 5, tierUpgradedDate: '2026-03-12' },
   { id: '2', name: 'Jordan Walsh', school: 'Highbury Academy', tier: 'Leader', engagementScore: 94, isUncutGem: false, lastContactDate: '2026-04-25', daysInCurrentTier: 30, plannedActivation: 'Instagram takeover', activationDate: '2026-05-02', activationLocation: 'Media Room', notes: 'Strong social media presence.', email: 'jordan.walsh@highburyacademy.school', activationsCompleted: 4, streakWeeks: 4, tierUpgradedDate: '2026-03-27' },
   { id: '3', name: 'Priya Sharma', school: 'Highbury Academy', tier: 'Leader', engagementScore: 91, isUncutGem: false, lastContactDate: '2026-04-23', daysInCurrentTier: 28, plannedActivation: 'Peer workshop', activationDate: '2026-04-30', activationLocation: 'Main Hall', email: 'priya.sharma@highburyacademy.school', activationsCompleted: 3, streakWeeks: 3, tierUpgradedDate: '2026-04-22' },
-  { id: '4', name: 'Alex Turner', school: 'Highbury Academy', tier: 'Active', engagementScore: 85, isUncutGem: true, lastContactDate: '2026-04-20', daysInCurrentTier: 35, notes: 'Quietly influential. Watch closely.', email: 'alex.turner@highburyacademy.school', activationsCompleted: 2, streakWeeks: 2, quote: 'What if we did a phone-free hour challenge where the whole year group competes? Leaderboard in the common room. I think it would actually go off.' },
+  { id: '4', name: 'Alex Turner', school: 'Highbury Academy', tier: 'Active', engagementScore: 85, isUncutGem: true, lastContactDate: '2026-04-20', daysInCurrentTier: 35, notes: 'Quietly influential. Watch closely.', email: 'alex.turner@highburyacademy.school', activationsCompleted: 2, streakWeeks: 2, quote: "I've been feeling like as the weather gets nicer, we should run an outdoor challenge — connecting with nature without our phones. What do you think?" },
   { id: '5', name: 'Sam Okonkwo', school: 'Highbury Academy', tier: 'Active', engagementScore: 82, isUncutGem: false, lastContactDate: '2026-04-22', daysInCurrentTier: 22, email: 'sam.okonkwo@highburyacademy.school', activationsCompleted: 2, streakWeeks: 3 },
   { id: '6', name: 'Lily Park', school: 'Highbury Academy', tier: 'Onboarded', engagementScore: 70, isUncutGem: false, lastContactDate: '2026-04-21', daysInCurrentTier: 14, email: 'lily.park@highburyacademy.school', activationsCompleted: 1, streakWeeks: 1 },
   
@@ -390,7 +400,7 @@ export interface FeedPost {
 export const feedPosts: FeedPost[] = [
   // Required 4 posts from spec
   { id: 'post-1', ambassadorId: '1', tag: 'win', content: 'Got 23 people to show up to our lunchtime session. Half of them said they\'d never heard of Opal before. Three of them asked how to become ambassadors.', datePosted: '2026-04-25', reactions: 42 },
-  { id: 'post-2', ambassadorId: '4', tag: 'idea', content: 'What if we did a phone-free hour challenge where the whole year group competes? Leaderboard in the common room. I think it would actually go off.', datePosted: '2026-04-24', reactions: 38 },
+  { id: 'post-2', ambassadorId: '4', tag: 'idea', content: "I've been feeling like as the weather gets nicer, we should run an outdoor challenge — connecting with nature without our phones. What do you think?", datePosted: '2026-04-24', reactions: 38 },
   { id: 'post-3', ambassadorId: '19', tag: 'story', content: 'I used to think wellness stuff was just for people who already had it together. Coming at it from the other side has been different.', datePosted: '2026-04-23', reactions: 31 },
   { id: 'post-4', ambassadorId: '22', tag: 'moment', content: 'First ambassador meeting at Elmwood. Six people showed up and we ended up talking for two hours. Something is starting here.', datePosted: '2026-04-22', reactions: 27 },
   

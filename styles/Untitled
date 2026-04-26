@@ -1,0 +1,47 @@
+Make the following two changes:
+
+1. LOCALSTORAGE PERSISTENCE
+Persist the ambassadors and schools state to localStorage 
+so that any schools or ambassadors added via the Launch a 
+School wizard survive a page refresh. Load from localStorage 
+on app initialisation, falling back to seed data if nothing 
+is stored. Add a "Reset to demo data" button in the bottom 
+left corner of the screen, small and unobtrusive, grey text. 
+On click: clear localStorage and reload seed data.
+
+2. PIPELINE TIER TOOLTIPS
+On the Pipeline Kanban view, add a hover tooltip to each 
+column heading that explains what that tier means and what's 
+required to be there. Tooltips should appear below the 
+column heading on hover, dark background #1A1A1A, white text, 
+violet border, generous padding. 
+
+Use exactly these definitions:
+
+Prospect 🔍
+"Initial interest confirmed. Intro call pending. 
+This student has shown curiosity about the programme 
+but hasn't formally started yet."
+
+Onboarded 📋
+"Onboarding call complete. First activation planned 
+or in progress. They're in — now it's about momentum."
+
+Active ⚡
+"At least 1 activation complete. At least 1 other 
+ambassador recruited. 3+ weeks of continuous streak. Active builder.”
+
+Leader 🔥
+"5+ weeks of streak. 3+ activations complete. 
+This person is now running the programme, with a clear sense of purpose.”
+
+Young Founders Network 🌍
+"8+ weeks of streak OR 5+ activations. 10+ ambassador 
+recruitments. Has independently activated something with high agency and 
+impact —  clearly changing the culture 
+at their school."
+
+Style the tooltip heading (tier name) in lime #A3E635, 
+the criteria in white, and the flavour text in grey 
+#78716C. Make it feel like a career framework, not 
+just a label."

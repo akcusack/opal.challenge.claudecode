@@ -7,6 +7,34 @@ import { ArrowRight, Clock } from 'lucide-react'
 
 const tiers: Tier[] = ['Prospect', 'Onboarded', 'Active', 'Leader', 'Young Founders Network']
 
+const tierTooltips: Record<Tier, { emoji: string; criteria: string; flavour: string }> = {
+  'Prospect': {
+    emoji: '🔍',
+    criteria: 'Initial interest confirmed. Intro call pending.',
+    flavour: "This student has shown curiosity about the programme but hasn't formally started yet.",
+  },
+  'Onboarded': {
+    emoji: '📋',
+    criteria: 'Onboarding call complete. First activation planned or in progress.',
+    flavour: "They're in — now it's about momentum.",
+  },
+  'Active': {
+    emoji: '⚡',
+    criteria: 'At least 1 activation complete. At least 1 other ambassador recruited. 3+ weeks of continuous streak.',
+    flavour: 'Active builder.',
+  },
+  'Leader': {
+    emoji: '🔥',
+    criteria: '5+ weeks of streak. 3+ activations complete.',
+    flavour: 'This person is now running the programme, with a clear sense of purpose.',
+  },
+  'Young Founders Network': {
+    emoji: '🌍',
+    criteria: '8+ weeks of streak OR 5+ activations. 10+ ambassador recruitments.',
+    flavour: 'Has independently activated something with high agency and impact — clearly changing the culture at their school.',
+  },
+}
+
 const tierHeaderStyles: Record<Tier, string> = {
   'Prospect': 'bg-gray-500 text-white',
   'Onboarded': 'bg-blue-500 text-white',
@@ -39,11 +67,27 @@ export function PipelineView() {
               key={tier} 
               className="flex-shrink-0 w-72"
             >
-              {/* Column header */}
-              <div className={cn('px-3 py-2 rounded-t-lg font-semibold text-sm', tierHeaderStyles[tier])}>
-                <div className="flex items-center justify-between">
-                  <span>{tier}</span>
-                  <span className="text-xs opacity-80 font-normal">{tierAmbassadors.length}</span>
+              {/* Column header with tooltip */}
+              <div className="relative group">
+                <div className={cn('px-3 py-2 rounded-t-lg font-semibold text-sm cursor-default', tierHeaderStyles[tier])}>
+                  <div className="flex items-center justify-between">
+                    <span>{tier}</span>
+                    <span className="text-xs opacity-80 font-normal">{tierAmbassadors.length}</span>
+                  </div>
+                </div>
+
+                <div className="absolute top-full left-0 mt-1.5 z-50 w-72 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150">
+                  <div className="p-4 rounded-lg bg-[#1A1A1A] border border-[#7C3AED] shadow-xl">
+                    <p className="text-[#A3E635] font-semibold text-sm mb-2">
+                      {tierTooltips[tier].emoji} {tier}
+                    </p>
+                    <p className="text-white text-sm leading-relaxed mb-2">
+                      {tierTooltips[tier].criteria}
+                    </p>
+                    <p className="text-[#78716C] text-sm leading-relaxed">
+                      {tierTooltips[tier].flavour}
+                    </p>
+                  </div>
                 </div>
               </div>
               
