@@ -1,51 +1,73 @@
-# Vibe Coding Challenge
+# Opal Ambassador OS (Vibe Coding Challenge)
 
 ## Overview
-This project was built as part of a timed vibe coding challenge using Claude.
 
-It is a simple [web app/tool/interface] that [briefly describe what it does].
+Opal Ambassador OS is a purpose-built CRM for managing a student ambassador network across partner schools. It's the operational backbone I'd want on day one of the role, as it's something that lets one person manage relationships, track momentum, and spot drop-offs across dozens of schools without losing the thread.
 
 ---
 
 ## What it does
-- [Feature 1 – e.g. allows users to input X and see Y]
-- [Feature 2]
-- [Feature 3]
+
+- **Schools view** — ranks all partner schools by a composite engagement score. Click any school to open a report card with engagement trend, top ambassador, next planned activation, and a recommended action. Download a one-pager to share directly with a school coordinator.
+- **Rankings** — leaderboard of all ambassadors scored by momentum (tier, activations completed, activity streak, recency of contact, Uncut Gem bonus). Includes a scoring philosophy explainer.
+- **Pipeline** — Kanban board tracking every ambassador from Prospect through to Young Founders Network. Hover over tier headings for definitions. Active ambassadors highlighted with lime borders.
+- **Calendar** — monthly view of activations and ambassador check-ins across the network. Click any event to preview details including times in London, New York, and Paris timezones. Add new events via a form.
+- **The Feed** — a live digest of network highlights (The Dispatch) alongside a community wall of ambassador posts, ideas, wins, and stories (The Wall).
+- **Yearbook** — grid of all ambassador cards with tier badges, Uncut Gem flags, streak indicators, and context-aware contact buttons (Contact vs Re-engage depending on drop-off status).
+- **Signal Feed sidebar** — persistent across all views. Shows top 3 action points, drop-off alerts, overall engagement, most engaged school, ambassadors ready to level up, and upcoming activations. Includes a live counter of hours of focus saved across the network.
+- **Launch a School wizard** — 3-step onboarding flow for bringing a new school into the programme: identify Uncut Gem prospects, align with school leadership, set 30-day trial goals.
 
 ---
 
 ## Tech stack
-- HTML
-- CSS
-- Vanilla JavaScript  
-- Built with assistance from Claude (AI-assisted development)
+
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- Zustand (state management with localStorage persistence)
+- Familjen Grotesk via Google Fonts
+- Scaffolded with v0 by Vercel
+- Developed and refined in Cursor using Claude Code
+- Hosted on Vercel
 
 ---
 
-## How to run this project
-1. Download or clone the repository  
-2. Open the folder  
-3. Double-click `index.html`  
-4. The app will run in your browser (no setup required)
+## How to run locally
+
+1. Clone the repository
+2. Run `npm install`
+3. Run `npm run dev`
+4. Open `localhost:3000` in your browser
+
+Or just visit the live deployment: https://opal-challenge2.vercel.app/
 
 ---
 
 ## Approach
-I used an iterative “vibe coding” workflow, working with Claude to:
-- Generate an initial working version of the app
-- Debug and refine functionality step-by-step
-- Improve UI and structure through rapid feedback loops
 
-The focus was on building a working prototype quickly, then refining clarity and usability within the time limit.
+I used an iterative vibe coding workflow — starting with a detailed PRD and a precise v0 prompt, then refining in Cursor with Claude Code through feedback loops.
+
+The focus was on building something I'd actually use in the role, not just a demo. Every feature connects back to a real operational problem: ambassador drop-offs going unnoticed, school relationships living in spreadsheets, the cold start problem when launching at a new school, and the challenge of surfacing students who wouldn't normally self-select into a wellness programme.
+
+Key design decisions:
+- Ranking system rewards momentum over status — who's moving, not just who's been around longest
+- Uncut Gems are built into the system from the first step of school onboarding, not bolted on
+- Contact buttons are context-aware — a dropped-off ambassador gets a different email template than an active one
+- The Share with School feature imagines the full workflow, not just the dashboard
 
 ---
 
-## What I would improve with more time
-- [Improvement 1 – e.g. better UI/UX design]
-- [Improvement 2 – e.g. add persistence or backend functionality]
-- [Improvement 3 – e.g. improve responsiveness or accessibility]
+## What I'd build next
+
+- **Ambassador-facing view** — a lightweight portal where students can log their own activations, post to The Wall, and see their progress through the tiers
+- **Opal for Schools Dashboard integration** — so schools can see their own report card and upcoming activations without needing to contact Opal directly
+- **Real data integration** — connect to Opal's existing school dashboard so engagement scores pull from actual usage data rather than manually tracked metrics
+- **Activation templates library** — a bank of proven activation formats ambassadors can browse and adapt, reducing the blank page problem when planning their first event
 
 ---
 
 ## Notes
-This project prioritised speed of iteration and clarity of execution within a 4-hour constraint, rather than production-level architecture.
+
+All data is seeded and fake. localStorage persistence means anything added via the Launch a School wizard survives a page refresh. Hit "Reset to demo data" (bottom left) to restore the original seed data at any time.
+
+Built in approximately 4 hours. Prioritised working features and genuine role-relevance over production-level architecture.
