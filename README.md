@@ -47,12 +47,12 @@ Or just visit the live deployment: https://opal-challenge2.vercel.app/
 
 I used an iterative vibe coding workflow — starting with a detailed PRD and a precise v0 prompt, then refining in Cursor with Claude Code through feedback loops.
 
-The focus was on building something I'd actually use in the role, not just a demo. Every feature connects back to a real operational problem: ambassador drop-offs going unnoticed, school relationships living in spreadsheets, the cold start problem when launching at a new school, and the challenge of surfacing students who wouldn't normally self-select into a wellness programme.
+The focus was on building something I'd actually want to use in the role. Every feature connects back to a real operational problem: ambassador drop-offs going unnoticed, school relationships living in spreadsheets, the cold start problem when launching at a new school, and the challenge of surfacing students who wouldn't normally self-select into a wellness programme.
 
 Key design decisions:
-- Ranking system rewards momentum over status — who's moving, not just who's been around longest
+- Ranking system rewards momentum over status (i.e. it uplifts who's building and moving, not just who's been around longest)
 - Uncut Gems are built into the system from the first step of school onboarding, not bolted on
-- Contact buttons are context-aware — a dropped-off ambassador gets a different email template than an active one
+- Contact buttons are context-aware (a dropped-off ambassador gets a different email template than an active one)
 - The Share with School feature imagines the full workflow, not just the dashboard
 
 ---
