@@ -203,6 +203,7 @@ export interface CalendarEvent {
   id: string
   title: string
   date: string
+  time?: string  // HH:MM, London time
   eventType: EventType
   ambassadorIds: string[]
   location: string
@@ -212,16 +213,16 @@ export interface CalendarEvent {
 // Seed calendar events
 export const calendarEvents: CalendarEvent[] = [
   // Activations from ambassador data
-  { id: 'act-1', title: 'Instagram takeover', date: '2026-05-02', eventType: 'activation', ambassadorIds: ['2'], location: 'Media Room', notes: 'Jordan leading social campaign' },
-  { id: 'act-2', title: 'Peer workshop', date: '2026-04-30', eventType: 'activation', ambassadorIds: ['3'], location: 'Main Hall', notes: 'Mental wellness focus' },
-  { id: 'act-3', title: 'Lunch session w/ Year 10s', date: '2026-05-03', eventType: 'activation', ambassadorIds: ['7'], location: 'Canteen' },
-  { id: 'act-4', title: 'Assembly presentation', date: '2026-05-05', eventType: 'activation', ambassadorIds: ['26'], location: 'Assembly Hall' },
+  { id: 'act-1', title: 'Instagram takeover', date: '2026-05-02', time: '15:30', eventType: 'activation', ambassadorIds: ['2'], location: 'Media Room', notes: 'Jordan leading social campaign' },
+  { id: 'act-2', title: 'Peer workshop', date: '2026-04-30', time: '12:30', eventType: 'activation', ambassadorIds: ['3'], location: 'Main Hall', notes: 'Mental wellness focus' },
+  { id: 'act-3', title: 'Lunch session w/ Year 10s', date: '2026-05-03', time: '13:00', eventType: 'activation', ambassadorIds: ['7'], location: 'Canteen' },
+  { id: 'act-4', title: 'Assembly presentation', date: '2026-05-05', time: '09:15', eventType: 'activation', ambassadorIds: ['26'], location: 'Assembly Hall' },
   // Check-ins spread across May 2026
-  { id: 'chk-1', title: 'Monthly check-in', date: '2026-05-06', eventType: 'check-in', ambassadorIds: ['1'], location: 'Google Meet', notes: 'YFN progress review' },
-  { id: 'chk-2', title: 'Onboarding follow-up', date: '2026-05-08', eventType: 'check-in', ambassadorIds: ['6', '15'], location: 'Room 7', notes: 'New ambassadors catch-up' },
-  { id: 'chk-3', title: 'Re-engagement call', date: '2026-05-12', eventType: 'check-in', ambassadorIds: ['21'], location: 'Google Meet', notes: 'Elmwood High support' },
-  { id: 'chk-4', title: 'Gem nurture session', date: '2026-05-15', eventType: 'check-in', ambassadorIds: ['4', '8'], location: 'Zoom', notes: 'Uncut gems development' },
-  { id: 'chk-5', title: 'Leadership prep', date: '2026-05-20', eventType: 'check-in', ambassadorIds: ['17'], location: 'Room 12', notes: 'Ethan YFN pathway discussion' },
+  { id: 'chk-1', title: 'Monthly check-in', date: '2026-05-06', time: '16:30', eventType: 'check-in', ambassadorIds: ['1'], location: 'Google Meet', notes: 'YFN progress review' },
+  { id: 'chk-2', title: 'Onboarding follow-up', date: '2026-05-08', time: '15:45', eventType: 'check-in', ambassadorIds: ['6', '15'], location: 'Room 7', notes: 'New ambassadors catch-up' },
+  { id: 'chk-3', title: 'Re-engagement call', date: '2026-05-12', time: '17:00', eventType: 'check-in', ambassadorIds: ['21'], location: 'Google Meet', notes: 'Elmwood High support' },
+  { id: 'chk-4', title: 'Gem nurture session', date: '2026-05-15', time: '18:00', eventType: 'check-in', ambassadorIds: ['4', '8'], location: 'Zoom', notes: 'Uncut gems development' },
+  { id: 'chk-5', title: 'Leadership prep', date: '2026-05-20', time: '16:00', eventType: 'check-in', ambassadorIds: ['17'], location: 'Room 12', notes: 'Ethan YFN pathway discussion' },
 ]
 
 export function getTierColor(tier: Tier): string {

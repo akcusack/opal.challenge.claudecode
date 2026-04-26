@@ -2,7 +2,7 @@
 
 import { useAppStore } from '@/lib/store'
 import { cn } from '@/lib/utils'
-import { ChevronLeft, ChevronRight, MapPin, Plus, X, Calendar } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MapPin, Plus, X, Calendar, Users } from 'lucide-react'
 import { useState } from 'react'
 import type { EventType } from '@/lib/data'
 
@@ -10,16 +10,35 @@ export function CalendarView() {
   const { ambassadors, sidebarOpen, calendarEvents, addCalendarEvent } = useAppStore()
   const [currentMonth, setCurrentMonth] = useState(new Date('2026-05-01'))
   const [showAddModal, setShowAddModal] = useState(false)
+  const [selectedDay, setSelectedDay] = useState<number | null>(null)
   
   // Form state
   const [newEvent, setNewEvent] = useState({
     title: '',
     date: '',
+    time: '',
     eventType: 'activation' as EventType,
     ambassadorIds: [] as string[],
     location: '',
     notes: '',
   })
+
+  // Format a HH:MM London time into a 3-timezone compact row
+  // All seed events fall within BST (UTC+1), EDT (UTC-4), CEST (UTC+2)
+  // so the relative offsets are: NY = London − 5h, Paris = London + 1h
+  const getTimezoneRow = (time: string): string => {
+    const [hStr, mStr] = time.split(':')
+    const h = parseInt(hStr)
+    const m = parseInt(mStr)
+    const fmt = (hour: number, min: number) => {
+      const h12 = hour % 12 || 12
+      const ampm = hour < 12 ? 'AM' : 'PM'
+      return `${h12}:${String(min).padStart(2, '0')} ${ampm}`
+    }
+    const nyH = ((h - 5) + 24) % 24
+    const parisH = (h + 1) % 24
+    return `${fmt(h, m)} London · ${fmt(nyH, m)} New York · ${fmt(parisH, m)} Paris`
+  }
   
   // Get ambassador name by ID
   const getAmbassadorName = (id: string) => {
@@ -67,6 +86,14 @@ export function CalendarView() {
   const days = getDaysInMonth(currentMonth)
   const monthName = currentMonth.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
   
+  const getEventsForDay = (day: number) =>
+    allEvents.filter(
+      e =>
+        e.dateObj.getFullYear() === currentMonth.getFullYear() &&
+        e.dateObj.getMonth() === currentMonth.getMonth() &&
+        e.dateObj.getDate() === day
+    )
+
   const getEventsOnDay = (day: number | null) => {
     if (!day) return { activations: false, checkIns: false }
     return {
@@ -97,16 +124,18 @@ export function CalendarView() {
     addCalendarEvent({
       title: newEvent.title,
       date: newEvent.date,
+      time: newEvent.time || undefined,
       eventType: newEvent.eventType,
       ambassadorIds: newEvent.ambassadorIds,
       location: newEvent.location,
       notes: newEvent.notes,
     })
-    
+
     // Reset form
     setNewEvent({
       title: '',
       date: '',
+      time: '',
       eventType: 'activation',
       ambassadorIds: [],
       location: '',
@@ -182,10 +211,12 @@ export function CalendarView() {
               return (
                 <div
                   key={index}
+                  onClick={() => { if (day && hasAnyEvent) setSelectedDay(day) }}
                   className={cn(
                     'aspect-square flex flex-col items-center justify-center rounded-md relative',
-                    day ? 'hover:bg-secondary cursor-pointer' : '',
-                    day && hasAnyEvent && 'bg-[#7C3AED]/10'
+                    day ? 'hover:bg-secondary' : '',
+                    day && hasAnyEvent && 'bg-[#7C3AED]/10 cursor-pointer hover:bg-[#7C3AED]/20',
+                    day && !hasAnyEvent && 'cursor-default'
                   )}
                 >
                   {day && (
@@ -253,13 +284,18 @@ export function CalendarView() {
                         </span>
                       </div>
                       <time className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                        {event.dateObj.toLocaleDateString('en-GB', { 
+                        {event.dateObj.toLocaleDateString('en-GB', {
                           weekday: 'short',
-                          day: 'numeric', 
+                          day: 'numeric',
                           month: 'short',
                           year: 'numeric'
                         })}
                       </time>
+                      {event.time && (
+                        <p className="text-xs text-[#555] mt-0.5 tracking-wide">
+                          {getTimezoneRow(event.time)}
+                        </p>
+                      )}
                       <h4 className="text-lg font-semibold text-foreground mt-1">
                         {event.title}
                       </h4>
@@ -297,6 +333,99 @@ export function CalendarView() {
         </div>
       </div>
       
+      {/* Day Detail Modal */}
+      {selectedDay !== null && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/75 z-50"
+            onClick={() => setSelectedDay(null)}
+          />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-[#1A1A1A] rounded-lg border border-[#7C3AED] shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <p className="text-xs font-medium text-[#A1A1AA] uppercase tracking-wider">
+                      {new Date(currentMonth.getFullYear(), currentMonth.getMonth(), selectedDay)
+                        .toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
+                    </p>
+                    <h3 className="text-xl font-bold text-white mt-1">
+                      {getEventsForDay(selectedDay).length === 1
+                        ? '1 event'
+                        : `${getEventsForDay(selectedDay).length} events`}
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setSelectedDay(null)}
+                    className="p-2 rounded-md hover:bg-[#2A2A2A] transition-colors"
+                  >
+                    <X className="h-5 w-5 text-[#A1A1AA]" />
+                  </button>
+                </div>
+
+                {/* Events */}
+                <div className="space-y-4">
+                  {getEventsForDay(selectedDay).map((event) => (
+                    <div
+                      key={event.id}
+                      className={cn(
+                        'p-4 rounded-lg bg-[#0A0A0A] border-l-4',
+                        event.eventType === 'activation' ? 'border-[#A3E635]' : 'border-[#7C3AED]'
+                      )}
+                    >
+                      {/* Type badge */}
+                      <span className={cn(
+                        'text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide',
+                        event.eventType === 'activation'
+                          ? 'bg-[#A3E635]/20 text-[#A3E635]'
+                          : 'bg-[#7C3AED]/20 text-[#7C3AED]'
+                      )}>
+                        {event.eventType === 'activation' ? 'Activation' : 'Check-in'}
+                      </span>
+
+                      {/* Title */}
+                      <h4 className="text-base font-semibold text-white mt-2">{event.title}</h4>
+
+                      {/* Timezones */}
+                      {event.time && (
+                        <p className="text-xs text-[#555] mt-1.5 leading-relaxed tracking-wide">
+                          {getTimezoneRow(event.time)}
+                        </p>
+                      )}
+
+                      {/* Meta */}
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-[#A1A1AA]">
+                          <Users className="h-3.5 w-3.5 flex-shrink-0" />
+                          <span>{event.ambassadorNames.join(', ')}{event.school ? ` · ${event.school}` : ''}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-[#A1A1AA]">
+                          <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+                          <span>{event.location}</span>
+                        </div>
+                        {event.notes && (
+                          <p className="text-xs text-[#666] italic mt-2 pl-1 border-l border-[#2A2A2A] leading-relaxed">
+                            {event.notes}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setSelectedDay(null)}
+                  className="mt-6 w-full py-3 rounded-md bg-[#2A2A2A] text-white font-medium hover:bg-[#3A3A3A] transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Add Event Modal */}
       {showAddModal && (
         <>
@@ -348,6 +477,24 @@ export function CalendarView() {
                     />
                   </div>
                   
+                  {/* Time */}
+                  <div>
+                    <label className="block text-xs font-medium text-[#A1A1AA] uppercase tracking-wider mb-2">
+                      Time (London)
+                    </label>
+                    <input
+                      type="time"
+                      value={newEvent.time}
+                      onChange={(e) => setNewEvent(prev => ({ ...prev, time: e.target.value }))}
+                      className="w-full px-3 py-2 rounded-md bg-[#0A0A0A] border border-[#2A2A2A] text-white focus:outline-none focus:ring-2 focus:ring-[#7C3AED] [color-scheme:dark]"
+                    />
+                    {newEvent.time && (
+                      <p className="mt-1.5 text-xs text-[#555] tracking-wide">
+                        {getTimezoneRow(newEvent.time)}
+                      </p>
+                    )}
+                  </div>
+
                   {/* Event Type */}
                   <div>
                     <label className="block text-xs font-medium text-[#A1A1AA] uppercase tracking-wider mb-2">

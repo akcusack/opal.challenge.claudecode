@@ -2,6 +2,7 @@
 
 import { useAppStore } from '@/lib/store'
 import { cn } from '@/lib/utils'
+import { useState, useEffect } from 'react'
 
 const tabs = [
   { id: 'schools', label: 'Schools' },
@@ -12,12 +13,35 @@ const tabs = [
   { id: 'yearbook', label: 'Yearbook' },
 ] as const
 
+const WORDS = ['focus', 'connection', 'clarity', 'presence', 'learning', 'creativity', 'memories', 'flow']
+const START_COUNT = 300
+
 export function TopNav() {
-  const { activeView, setActiveView, ambassadors } = useAppStore()
-  
-  // Calculate active ambassador count (non-prospects)
-  const activeCount = ambassadors.filter(a => a.tier !== 'Prospect').length
-  
+  const { activeView, setActiveView } = useAppStore()
+
+  const [count, setCount] = useState(START_COUNT)
+  const [wordIndex, setWordIndex] = useState(0)
+  const [wordVisible, setWordVisible] = useState(true)
+  const [countFlash, setCountFlash] = useState(false)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Fade word out, swap, fade back in
+      setWordVisible(false)
+      setTimeout(() => {
+        setWordIndex(i => (i + 1) % WORDS.length)
+        setWordVisible(true)
+      }, 250)
+
+      // Increment count with brief lime flash
+      setCount(c => c + 1)
+      setCountFlash(true)
+      setTimeout(() => setCountFlash(false), 400)
+    }, 10000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-[#0A0A0A]/80 backdrop-blur-sm">
       <div className="flex h-16 items-center justify-between px-6">
@@ -51,12 +75,28 @@ export function TopNav() {
             ))}
           </nav>
         </div>
-        
-        <div className="flex items-center gap-4">
-          <span className="text-xs font-medium text-muted-foreground">
-            {activeCount} active ambassadors
-          </span>
-          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#A3E635]" />
+
+        {/* Live mission counter */}
+        <div className="flex items-center gap-2">
+          <span className="text-base leading-none">📵</span>
+          <div className="flex items-baseline gap-1.5">
+            <span
+              className={cn(
+                'text-xl font-bold tabular-nums transition-colors duration-300',
+                countFlash ? 'text-[#A3E635]' : 'text-white'
+              )}
+            >
+              {count}
+            </span>
+            <span className="text-xs text-[#78716C] font-normal">hrs of</span>
+            <span
+              className="text-sm font-bold text-[#A3E635] transition-opacity duration-500"
+              style={{ opacity: wordVisible ? 1 : 0 }}
+            >
+              {WORDS[wordIndex]}
+            </span>
+            <span className="text-xs text-[#78716C] font-normal">saved</span>
+          </div>
         </div>
       </div>
     </header>

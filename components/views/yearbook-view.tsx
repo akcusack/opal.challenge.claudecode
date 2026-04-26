@@ -69,14 +69,24 @@ export function YearbookView() {
         {ambassadors.map((ambassador) => {
           const daysSinceContact = getDaysSinceContact(ambassador.lastContactDate)
           const isDropOff = daysSinceContact >= 14
-          
+          const isActiveLimeBorder =
+            ambassador.streakWeeks >= 3 ||
+            (ambassador.activationsCompleted > 0 && daysSinceContact <= 30)
+
           return (
+            <div key={ambassador.id} className="relative group/card">
+            {isActiveLimeBorder && (
+              <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150 pointer-events-none z-10">
+                <div className="bg-[#1A1A1A] border border-[#A3E635] text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                  🔥 Active
+                </div>
+              </div>
+            )}
             <div
-              key={ambassador.id}
               className={cn(
                 'text-left p-4 rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] transition-all',
                 'hover:shadow-md hover:border-[#7C3AED]/30',
-                ambassador.isUncutGem && 'border-2 border-[#A3E635]',
+                isActiveLimeBorder && 'border-2 border-[#A3E635]',
                 selectedAmbassador?.id === ambassador.id && 'ring-2 ring-[#7C3AED]'
               )}
             >
@@ -142,6 +152,7 @@ export function YearbookView() {
                 <Mail className="h-3 w-3" />
                 {isDropOff ? 'Re-engage' : 'Contact'}
               </button>
+            </div>
             </div>
           )
         })}

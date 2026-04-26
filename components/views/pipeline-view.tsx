@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppStore } from '@/lib/store'
-import { getTierColor, getTierBorderColor, type Tier } from '@/lib/data'
+import { getTierColor, getTierBorderColor, getDaysSinceContact, type Tier } from '@/lib/data'
 import { cn } from '@/lib/utils'
 import { ArrowRight, Clock } from 'lucide-react'
 
@@ -95,18 +95,28 @@ export function PipelineView() {
               <div className="bg-secondary rounded-b-lg p-2 min-h-[400px] space-y-2">
                 {tierAmbassadors.map((ambassador) => {
                   const stuckInTier = ambassador.daysInCurrentTier >= 30
-                  
+                  const isActiveLimeBorder =
+                    ambassador.streakWeeks >= 3 ||
+                    (ambassador.activationsCompleted > 0 && getDaysSinceContact(ambassador.lastContactDate) <= 30)
+
                   return (
+                    <div key={ambassador.id} className="relative group/card">
                     <div
-                      key={ambassador.id}
                       className={cn(
                         'p-3 bg-[#1A1A1A] rounded-md border transition-all',
                         'hover:shadow-md',
-                        ambassador.isUncutGem && 'border-2 border-[#A3E635]',
-                        stuckInTier && !ambassador.isUncutGem && 'border-amber-500/50',
-                        !ambassador.isUncutGem && !stuckInTier && 'border-[#2A2A2A]'
+                        isActiveLimeBorder && 'border-2 border-[#A3E635]',
+                        stuckInTier && !isActiveLimeBorder && 'border-amber-500/50',
+                        !isActiveLimeBorder && !stuckInTier && 'border-[#2A2A2A]'
                       )}
                     >
+                    {isActiveLimeBorder && (
+                      <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150 pointer-events-none z-10">
+                        <div className="bg-[#1A1A1A] border border-[#A3E635] text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          🔥 Active
+                        </div>
+                      </div>
+                    )}
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <h4 className="font-medium text-foreground text-sm flex items-center gap-1.5">
@@ -147,6 +157,7 @@ export function PipelineView() {
                           <ArrowRight className="h-3 w-3" />
                         </button>
                       )}
+                    </div>
                     </div>
                   )
                 })}
